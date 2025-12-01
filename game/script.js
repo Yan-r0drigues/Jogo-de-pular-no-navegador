@@ -11,6 +11,10 @@ object.className = "object";
 object.style.backgroundImage = "url('./img/box.png')";
 object.style.backgroundSize = "cover";
 
+const mensagem = document.createElement("div");
+mensagem.className = "mensagem";
+
+
 let score = 0;
 let ultimaLegenda = "";
 
@@ -115,7 +119,7 @@ const loopObject = function () {
         message += `\nULTIMO SCORE: ${ultimaLegenda}`;
       }
 
-      alert(message);
+      // alert(message);
 
       ultimaLegenda = legendaScore();
 
@@ -147,6 +151,7 @@ document.addEventListener("keyup", (e) => {
 
 container.appendChild(player);
 container.appendChild(object);
+container.appendChild(mensagem);
 document.body.appendChild(scoreText);
 document.body.appendChild(container);
 
