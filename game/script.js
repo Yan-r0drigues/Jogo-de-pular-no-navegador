@@ -1,3 +1,51 @@
+const jumping = (()=>{
+
+  const cenario = ()=>{}
+  const controleJogo = ()=>{
+    const verificarColisao =(objetoA, objetoB)=>{
+      return objetoA.right > objetoB.left &&
+      playobjetoAerRect.left < objetoB.right &&
+      objetoA.bottom > objetoB.top &&
+      objetoA.top < objetoB.bottom;
+
+    }
+    return{}
+  }
+  const player = ()=>{}
+  const obstaculos = ()=>{}
+  const pickups = ()=>{}
+  
+  const controles = ()=>{}
+
+  const criarContainer = ()=>{}
+  const initMensagens = ()=>{}
+  const initPlayer = ()=>{}
+  const initCaixas = ()=>{}
+  const initScore = ()=>{}
+  const init = ()=>{
+      criarContainer();
+      initMensagens();
+      initPlayer();
+      initCaixas();
+      initScore();
+  }
+  return{
+     init : init
+  }
+})();
+jumping.init();
+
+
+
+
+
+
+
+
+
+
+
+
 const container = document.createElement("div");
 container.className = "container";
 
@@ -6,13 +54,35 @@ player.className = "player";
 player.style.backgroundImage = "url('./img/player-01.png')";
 player.style.backgroundSize = "cover";
 
-const object = document.createElement("div");
-object.className = "object";
-object.style.backgroundImage = "url('./img/box.png')";
-object.style.backgroundSize = "cover";
+
+
+
+
+const caixa = {
+    elemento : null,    
+    height:0,
+    width:0,
+    x:0,
+    y:0,
+    velocidade:0
+}
+const criarCaixa = ()=>{
+      const c = document.createElement("div");
+      c.className = "caixa";
+      c.style.backgroundImage = "url('./img/box.png')";
+      c.style.backgroundSize = "cover";
+      return c;
+    }
+
 
 const mensagem = document.createElement("div");
 mensagem.className = "mensagem";
+mensagem.innerHTML = `
+  <h1>GAME OVER!</h1>
+  <a href="#">Restart</a>`;
+
+mensagem.style.display = "none";
+document.body.appendChild(mensagem);
 
 const playerFrames = [
   "./img/player.png",
@@ -93,7 +163,7 @@ function gerarNumeroAleatorio(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const loopObject = function () {
+const loopcaixa = function () {
   let posicao = window.innerWidth - 40;
   let tamanhoAleatorio = gerarNumeroAleatorio(40, 80);
 
@@ -109,47 +179,38 @@ const loopObject = function () {
 
   setInterval(() => {
     posicao -= velocidadeObjeto;
-    object.style.right = window.innerWidth - posicao + "px";
+    caixa.style.right = window.innerWidth - posicao + "px";
 
     if (posicao <= -40) {
       posicao = window.innerWidth;
       tamanhoAleatorio = gerarNumeroAleatorio(40, 70);
-      object.style.height = tamanhoAleatorio + "px";
-      object.style.width = tamanhoAleatorio + "px";
+      caixa.style.height = tamanhoAleatorio + "px";
+      caixa.style.width = tamanhoAleatorio + "px";
       velocidadeObjeto++;
       score++;
       scoreText.innerText = legendaScore();
     }
 
     const playerRect = player.getBoundingClientRect();
-    const objectRect = object.getBoundingClientRect();
+    const caixaRect = caixa.getBoundingClientRect();
 
     const colisao =
-      playerRect.right > objectRect.left &&
-      playerRect.left < objectRect.right &&
-      playerRect.bottom > objectRect.top &&
-      playerRect.top < objectRect.bottom;
+      playerRect.right > caixaRect.left &&
+      playerRect.left < caixaRect.right &&
+      playerRect.bottom > caixaRect.top &&
+      playerRect.top < caixaRect.bottom;
 
     if (colisao) {
-      // let message = `GAME OVER!! \nSCORE: ${score}`;
-
-      // if (ultimaLegenda != "") {
-      //   message += `\nULTIMO SCORE: ${ultimaLegenda}`;
-      // }
-
-      // alert(message);
-      container.appendChild(mensagem);
+      mensagem.style.display = "flex";
       ultimaLegenda = legendaScore();
-
       posicao = window.innerWidth;
       score = 0;
       scoreText.innerText = legendaScore();
       velocidadeObjeto = 9;
-      
     }
-    else {
-      container.removeChild(mensagem);
-    }
+    // else {
+    //   teste = setInterval( )
+    // }
   }, 20);
 };
 
@@ -171,9 +232,13 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
+document.addEventListener("click", (e) => {
+  mensagem.style.display = "none";
+});
+
 container.appendChild(player);
-container.appendChild(object);
+container.appendChild(caixa);
 document.body.appendChild(scoreText);
 document.body.appendChild(container);
 
-loopObject();
+loopcaixa();
