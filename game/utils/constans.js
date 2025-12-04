@@ -1,0 +1,1 @@
+export const PATH_DUCK_IMAGE = "../game/img/patinho-pixel-art.png";
