@@ -3,7 +3,7 @@ container.className = "container";
 
 const player = document.createElement("div");
 player.className = "player";
-player.style.backgroundImage = "url('./img/player.png')";
+player.style.backgroundImage = "url('./img/player-01.png')";
 player.style.backgroundSize = "cover";
 
 const object = document.createElement("div");
@@ -14,6 +14,14 @@ object.style.backgroundSize = "cover";
 const mensagem = document.createElement("div");
 mensagem.className = "mensagem";
 
+const playerFrames = [
+  "./img/player.png",
+  "./img/player-01.png",
+  "./img/player-02.png",
+  "./img/player-03.png",
+  "./img/player-04.png"
+];
+let frameIndex = 0;
 
 let score = 0;
 let ultimaLegenda = "";
@@ -24,7 +32,7 @@ const nivelUsuario = function () {
   } else if (score <= 10) {
     return "Baby 👶";
   } else if (score <= 15) {
-    return "GEINF hardcore 😎";
+    return "Hardcore 😎";
   } else if (score <= 20) {
     return "Jogador profissional 👾";
   } else {
@@ -90,6 +98,16 @@ const loopObject = function () {
   let tamanhoAleatorio = gerarNumeroAleatorio(40, 80);
 
   setInterval(() => {
+    frameIndex = (frameIndex + 1) % playerFrames.length;
+    player.style.backgroundImage = `url('${playerFrames[frameIndex]}`
+
+    if (pulando === true) {
+      player.style.backgroundImage = `url('${playerFrames[0]}`
+    }
+
+  }, 135);
+
+  setInterval(() => {
     posicao -= velocidadeObjeto;
     object.style.right = window.innerWidth - posicao + "px";
 
@@ -113,20 +131,24 @@ const loopObject = function () {
       playerRect.top < objectRect.bottom;
 
     if (colisao) {
-      let message = `GAME OVER!! \nSCORE: ${score}`;
+      // let message = `GAME OVER!! \nSCORE: ${score}`;
 
-      if (ultimaLegenda != "") {
-        message += `\nULTIMO SCORE: ${ultimaLegenda}`;
-      }
+      // if (ultimaLegenda != "") {
+      //   message += `\nULTIMO SCORE: ${ultimaLegenda}`;
+      // }
 
       // alert(message);
-
+      container.appendChild(mensagem);
       ultimaLegenda = legendaScore();
 
       posicao = window.innerWidth;
       score = 0;
       scoreText.innerText = legendaScore();
       velocidadeObjeto = 9;
+      
+    }
+    else {
+      container.removeChild(mensagem);
     }
   }, 20);
 };
@@ -151,7 +173,6 @@ document.addEventListener("keyup", (e) => {
 
 container.appendChild(player);
 container.appendChild(object);
-container.appendChild(mensagem);
 document.body.appendChild(scoreText);
 document.body.appendChild(container);
 
