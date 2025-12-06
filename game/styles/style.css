@@ -7,6 +7,16 @@
     font-family: "Press Start 2P", sans-serif;
 }
 
+body {
+    background-color: #000;
+}
+
 canvas {
-    background-color: #716f6f;
+    background-color: #848484;
+    width: 50vw;
+    height: 50vh;
+    margin: 0 auto;
+    margin-top: 25vh;
+    display: block;
+    border-radius: 5px;
 }
